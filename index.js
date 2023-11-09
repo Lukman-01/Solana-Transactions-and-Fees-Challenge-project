@@ -20,7 +20,12 @@ const DEMO_FROM_SECRET_KEY = new Uint8Array(
     // paste your secret key inside this empty array
     // then uncomment transferSol() at the bottom
     [
-        
+        118, 140,  47, 125,   1, 231,  91,  55,  95, 249, 109,
+         93,  85,  36, 196,  98,   5, 215,  86, 202, 178,  78,
+         71, 230, 197,  43, 191,  43,  47, 189, 109, 137,  38,
+        192,  22,  79,  41, 222, 136, 120,   0, 234, 255, 157,
+         44, 151,   6, 102,   4,   4, 186, 184, 202,  78, 217,
+         56,  41, 207,  79, 157,  28, 132, 220,  86
     ]            
 );
 
@@ -77,4 +82,4 @@ const transferSol = async() => {
     console.log('Signature is', signature);
 }
 
-//transferSol();
+transferSol();
