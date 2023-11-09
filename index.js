@@ -30,7 +30,7 @@ const DEMO_FROM_SECRET_KEY = new Uint8Array(
 );
 
 const transferSol = async() => {
-    const connection = new Connection(clusterApiUrl("devnet"), "confirmed");
+    const connection = new Connection("http://127.0.0.1:8899", "confirmed");
 
     // Get Keypair from Secret Key
     var from = Keypair.fromSecretKey(DEMO_FROM_SECRET_KEY);
@@ -48,7 +48,7 @@ const transferSol = async() => {
     console.log("Airdopping some SOL to Sender wallet!");
     const fromAirDropSignature = await connection.requestAirdrop(
         new PublicKey(from.publicKey),
-        2 * LAMPORTS_PER_SOL
+        4 * LAMPORTS_PER_SOL
     );
 
     // Latest blockhash (unique identifer of the block) of the cluster
@@ -64,12 +64,19 @@ const transferSol = async() => {
 
     console.log("Airdrop completed for the Sender account");
 
+    let fromBalance = await connection.getBalance(from.publicKey);
+    console.log("From balance before Transaction", fromBalance);
+    let toBalance = await connection.getBalance(to.publicKey);
+    console.log("To balance before Transaction", toBalance);
+
+    const fiftyPercent = fromBalance / 2;
+
     // Send money from "from" wallet and into "to" wallet
     var transaction = new Transaction().add(
         SystemProgram.transfer({
             fromPubkey: from.publicKey,
             toPubkey: to.publicKey,
-            lamports: LAMPORTS_PER_SOL / 100
+            lamports: fiftyPercent
         })
     );
 
@@ -80,6 +87,11 @@ const transferSol = async() => {
         [from]
     );
     console.log('Signature is', signature);
+
+    let afterfromBalance = await connection.getBalance(from.publicKey);
+    console.log("From balance before Transaction", afterfromBalance);
+    let aftertoBalance = await connection.getBalance(to.publicKey);
+    console.log("To balance before Transaction", aftertoBalance);
 }
 
 transferSol();
